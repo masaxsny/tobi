@@ -8,4 +8,7 @@ Simple sinatra application generator.
 
 ## Usage
 
-    $ tobi --help
+    $ tobi foo
+    $ cd foo
+    $ bundle install
+    $ ruby app.rb
