@@ -1,0 +1,13 @@
+source :rubygems
+
+gem 'sinatra'
+<%- @src[:gems].each do |g| -%>
+<%= "gem '#{g}'" %>
+<%- end -%>
+
+<%- if @src[:test_framework] -%>
+<%= "group :test do" %>
+<%= "  gem 'rack-test'" %>
+<%= "end" %>
+<%- end -%>
+

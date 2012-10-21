@@ -1,0 +1,66 @@
+#! /usr/bin/env ruby
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'tobi'
+require 'optparse'
+
+opt = OptionParser.new
+options = {}
+
+msg = <<MSG
+Tobi is a simple sinatra application generator.
+
+Usage:
+  tobi [options] APP_NAME
+
+View templates which can be specified:
+  #{Tobi::enum_in_sentence(Tobi::OPT_VALUES[:ViewTemplate])}
+CSS templates which can be specified:
+  #{Tobi::enum_in_sentence(Tobi::OPT_VALUES[:CssTemplate])}
+Test frameworks which can be specified:
+  #{Tobi::enum_in_sentence(Tobi::OPT_VALUES[:TestFramework])}
+
+Options:
+MSG
+opt.banner = msg
+
+opt.on('-m', 'Application is generated in a modular style.') do |modular_style|
+  options[:ModularStyle] = modular_style
+end
+
+opt.on('-r', 'Rackup file is generated.') do |rackup|
+  options[:Rackup] = rackup
+end
+
+opt.on('-v TEMPLATE', 'View template is specified. (default haml)') do |template|
+  options[:ViewTemplate] = template
+end
+
+opt.on('-c TEMPLATE', 'CSS template is specified. (default scss)') do |template|
+  options[:CssTemplate] = template
+end
+
+opt.on('-t TEST_FRAMEWORK', 'Test framework is specified.') do |test_framework|
+  options[:TestFramework] = test_framework
+end
+
+opt.on('--version', 'Display current version.') do
+  puts "tobi #{Tobi::VERSION}"
+  exit(0)
+end
+
+begin
+  opt.parse!
+rescue => e
+  puts e.message
+  exit(0)
+end
+
+if ARGV.length == 0
+  puts 'Application name is not specified.'
+  exit(0)
+end
+
+cfg = Tobi::Config.new(ARGV[0], options)
+gen = Tobi::Generator.new(cfg)
+gen.generate
+

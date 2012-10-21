@@ -1,0 +1,11 @@
+xhtml_strict do
+  head do
+    link(rel: "stylesheet", href: "style.css", type: "text/css")
+    title "<%= @app_name %>"
+  end
+  body do
+    h1 "Hello!"
+    p @ua
+  end
+end
+
