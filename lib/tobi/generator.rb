@@ -98,6 +98,7 @@ module Tobi
     # 戻り値: なし
     def output_app_files
       # アプリケーションのルートディレクトリ
+      check_root_dir
       Dir.mkdir(@app_path) unless File.exists?(@app_path)
 
       # app.rb
@@ -136,6 +137,22 @@ module Tobi
         dir = "spec"
         fn = "app_spec.rb"
         mkdir_and_output(dir, fn)
+      end
+    end
+
+    # 指定されたディレクトリが存在したら警告表示し処理を続けるか確認する。
+    #
+    # 戻り値: なし
+    def check_root_dir
+      if File.exists?(@app_path)
+        puts "Directory `#{@app_path}` already exists."
+        str = ''
+        loop do
+          print 'Is processing continued?(y/n): '
+          str = STDIN.getc.downcase
+          break if str == 'y' || str == 'n'
+        end
+        exit(0) if str == 'n'
       end
     end
 
