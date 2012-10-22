@@ -30,7 +30,7 @@ module Tobi
       begin
         output_app_files
       rescue => e
-        msg = "ファイルの出力に失敗しました。: #{e.message}"
+        msg = "Output error: #{e.message}"
         STDERR.puts msg
         exit(1)
       end
